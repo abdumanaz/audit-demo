@@ -39,3 +39,16 @@ Endpoints are protected using `SecurityFilter`, a basic web Filter class which c
 
 Sample requests are attached in datalkz.postman_collection.json which can be imported to Postman App. 
 API Doc : API Doc.docx
+
+## Current Approach and Further Enhancements
+
+`aroundAuditableMethods` in `AuditTrailConfig` class is the focal point of Audit trail configuration. It is executed for every auditable method.
+
+If the auditable method, doesnot throw an exception, audit trailing is done.
+
+Further enhancements can be done to the solution:
+
+1. Include a primary key reference in the audit trail table for the bean.
+2. Common exception logic.
+
+
