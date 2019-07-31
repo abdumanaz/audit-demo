@@ -13,7 +13,7 @@ public class ProductService {
 	@Autowired
 	ProductDao productDao;
 	
-	public Product viewProduct(@AuditableParam Product product) {
+	public Product viewProduct(Product product) {
 		return this.productDao.viewProduct(product);
 	}
 

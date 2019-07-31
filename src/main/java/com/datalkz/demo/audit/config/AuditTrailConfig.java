@@ -5,6 +5,8 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.aspectj.lang.JoinPoint;
+import org.aspectj.lang.ProceedingJoinPoint;
+import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
@@ -45,8 +47,22 @@ public class AuditTrailConfig {
 	public void auditableMethods() {
 	}
 
-	@Before("auditableMethods()")
-	public void before(JoinPoint joinPoint) {
+//	@Before("auditableMethods()")
+//	public void before(JoinPoint joinPoint) {
+//
+//		Object bean = joinPoint.getTarget();
+//		AuditBean auditBean = new AuditBean();
+//		auditBean.setModule(this.getModule(bean));
+//		auditBean.setUserId(this.getUserId());
+//		auditBean.setFunctionName(joinPoint.getSignature().getName());
+//		auditBean.setParams(this.getAuditableParams(joinPoint.getArgs()));
+//		this.auditTrailConfigService.writeAuditTrail(auditBean);
+//
+//	}
+	
+	
+	@Around("auditableMethods()")
+	public Object aroundAuditableMethods(ProceedingJoinPoint joinPoint) {
 
 		Object bean = joinPoint.getTarget();
 		AuditBean auditBean = new AuditBean();
@@ -54,7 +70,17 @@ public class AuditTrailConfig {
 		auditBean.setUserId(this.getUserId());
 		auditBean.setFunctionName(joinPoint.getSignature().getName());
 		auditBean.setParams(this.getAuditableParams(joinPoint.getArgs()));
+		Object result;
+		try {
+			result = joinPoint.proceed(joinPoint.getArgs());
+		} catch (Throwable e) {
+			log.error("Error in invoking method : {}", auditBean.getFunctionName());
+			return null;
+		}
+		
+		
 		this.auditTrailConfigService.writeAuditTrail(auditBean);
+		return result;
 
 	}
 
