@@ -33,6 +33,6 @@
 			<attribute name="optional" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="D:/Workspace.Fp-QuoteSync libs/oracle/ojdbc6.jar"/>
+	<classpathentry kind="lib" path="D:/libs/oracle/ojdbc6.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>
